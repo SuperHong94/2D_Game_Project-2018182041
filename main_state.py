@@ -33,6 +33,7 @@ class Player:
 
     def update(self):
 <<<<<<< HEAD
+<<<<<<< HEAD
         global pastEvent
         if(self.direction=="stop"):
             pastEvent='stop'
@@ -52,6 +53,9 @@ class Player:
         if self.direction=='upLeft':
             self.x-=self.speed
             self.y += self.speed
+=======
+
+>>>>>>> parent of 91b7b16... 플레이어 애니메이션 && 4방향이동
 =======
 
 >>>>>>> parent of 91b7b16... 플레이어 애니메이션 && 4방향이동
@@ -96,6 +100,7 @@ def handle_events():
         elif event.type==SDL_KEYDOWN and event.key==SDLK_p:
             game_framework.push_state(pause_sate)
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         #방향키입력-------------------------
         elif event.type==SDL_KEYDOWN:
@@ -138,6 +143,9 @@ def handle_events():
         #-------------------------------
 
 
+=======
+    pass
+>>>>>>> parent of 91b7b16... 플레이어 애니메이션 && 4방향이동
 =======
     pass
 >>>>>>> parent of 91b7b16... 플레이어 애니메이션 && 4방향이동
