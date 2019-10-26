@@ -21,6 +21,7 @@ font = None
 player=None
 
 class Player:
+
     def __init__(self):
         self.image=load_image('resource/player(edit).png')
         #''' self.height=self.image.h
@@ -33,16 +34,25 @@ class Player:
         pass
 
     def update(self):
+        global pastEvent
         if(self.direction=="stop"):
+            pastEvent='stop'
             pass
-        elif self.direction== 'left':
+        if self.direction== 'left':
+            pastEvent='left'
             self.x-=self.speed
-        elif self.direction== 'up':
+        if self.direction== 'up':
+            pastEvent ='up'
             self.y+=self.speed
-        elif self.direction== 'down':
+            print(pastEvent)
+
+        if self.direction== 'down':
             self.y-=self.speed
-        elif self.direction== 'right':
+        if self.direction== 'right':
             self.x+=self.speed
+        if self.direction=='upLeft':
+            self.x-=self.speed
+            self.y += self.speed
         pass
 
     def draw(self):
@@ -73,31 +83,56 @@ def resume():
 
 
 def handle_events():
+    global pastEvent
     events=get_events()
-    global Player_direction
     for event in events:
         if event.type==SDL_QUIT:
             game_framework.quit()
         elif event.type==SDL_KEYDOWN and event.key==SDLK_ESCAPE:
-            print("ahffk")
             #game_framework.change_state(title_state)
+            pass
         elif event.type==SDL_KEYDOWN and event.key==SDLK_p:
             game_framework.push_state(pause_sate)
-        elif event.type==SDL_KEYDOWN and event.key==SDLK_LEFT:
-            player.frame=0
-            player.direction='left'
-        elif event.type==SDL_KEYDOWN and event.key==SDLK_UP:
-            player.frame = 2
-            player.direction='up'
-        elif event.type==SDL_KEYDOWN and event.key==SDLK_DOWN:
-            player.frame = 2
-            player.direction='down'
-        elif event.type==SDL_KEYDOWN and event.key==SDLK_RIGHT:
-            player.frame = 4
-            player.direction='right'
+
+        #방향키입력-------------------------
+        elif event.type==SDL_KEYDOWN:
+            if event.key==SDLK_LEFT:
+
+                if pastEvent=='up':
+                    player.frame = 0
+                    player.direction = 'upLeft'
+                elif pastEvent=='left':
+                    player.frame=0
+                    player.direction='left'
+                pastEvent='left'
+                print(pastEvent)
+
+
+            if event.key==SDLK_UP:
+
+                if pastEvent=='up':
+                    player.frame = 2
+                    player.direction='up'
+                if pastEvent=='left':
+                    player.frame = 0
+                    player.direction = 'upLeft'
+                    handle_events()
+
+
+
+            if event.key==SDLK_DOWN:
+                player.frame = 2
+                player.direction='down'
+
+            if event.key==SDLK_RIGHT:
+                player.frame = 4
+                player.direction='right'
+
+
         elif event.type==SDL_KEYUP and (event.key==SDLK_LEFT or event.key==SDLK_UP or event.key==SDLK_DOWN or event.key==SDLK_RIGHT):
             player.frame = 2
             player.direction='stop'
+        #-------------------------------
 
 
 
