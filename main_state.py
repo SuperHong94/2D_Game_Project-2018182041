@@ -3,7 +3,7 @@ import json
 import os
 
 from pico2d import *
-from enum   import Enum
+
 import game_framework
 
 import start_state
@@ -20,20 +20,19 @@ grass = None
 font = None
 player=None
 
+
+
+
 class Player:
 
     def __init__(self):
-        self.image=load_image('resource/player(edit).png')
-        #''' self.height=self.image.h
-        #self.width=self.image.w
-        #self.frame=5;'''
-        self.x, self.y = 400, 10
-        self.frame=2  # 0이left, 2==정지,위,아래 , 4==오른쪽
-        self.direction='stop'
-        self.speed=1
+        self.image=load_image('resource/player.png')
+        self.image.
+
         pass
 
     def update(self):
+<<<<<<< HEAD
         global pastEvent
         if(self.direction=="stop"):
             pastEvent='stop'
@@ -53,10 +52,13 @@ class Player:
         if self.direction=='upLeft':
             self.x-=self.speed
             self.y += self.speed
+=======
+
+>>>>>>> parent of 91b7b16... 플레이어 애니메이션 && 4방향이동
         pass
 
     def draw(self):
-        self.image.clip_draw(30*self.frame,0,30,30,self.x,self.y)
+        self.image.clip_draw(0,0,100,100,400,400)
         pass
 
 def enter():
@@ -93,6 +95,7 @@ def handle_events():
             pass
         elif event.type==SDL_KEYDOWN and event.key==SDLK_p:
             game_framework.push_state(pause_sate)
+<<<<<<< HEAD
 
         #방향키입력-------------------------
         elif event.type==SDL_KEYDOWN:
@@ -135,10 +138,12 @@ def handle_events():
         #-------------------------------
 
 
+=======
+    pass
+>>>>>>> parent of 91b7b16... 플레이어 애니메이션 && 4방향이동
 
 
 def update():
-    player.update()
     pass
 
 
