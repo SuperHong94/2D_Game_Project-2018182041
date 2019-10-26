@@ -5,7 +5,11 @@ import os
 from pico2d import *
 
 import game_framework
-import title_state
+
+import start_state
+
+#import title_state
+
 import pause_sate
 
 
@@ -14,54 +18,38 @@ name = "MainState"
 boy = None
 grass = None
 font = None
+player=None
 
 
 
-class Grass:
+
+class Player:
     def __init__(self):
-        self.image = load_image('grass.png')
+        self.image=load_image('resource/player.png')
+        self.image.
 
-    def draw(self):
-        self.image.draw(400, 30)
-
-
-
-class Boy:
-    def __init__(self):
-        self.x, self.y = 0, 90
-        self.frame = 0
-        self.image = load_image('animation_sheet.png')
-        self.dir = 1
-        self.direction=False
+        pass
 
     def update(self):
-        self.frame = (self.frame + 1) % 8
-        self.x += self.dir
-        if self.x >= 800:  #왼쪽
-            self.direction=True
-            self.dir = -1
-        elif self.x <= 0:
-            self.direction=False
-            self.dir = 1
+
+        pass
 
     def draw(self):
-        if self.direction:
-            self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)  #왼쪽
-        else:
-            self.image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
-
+        self.image.clip_draw(0,0,100,100,400,400)
+        pass
 
 def enter():
-    global boy,grass
-    boy=Boy()
-    grass=Grass()
-    pass
+   ''' global boy,grass
+    grass=Grass()'''
+   global player
+   player=Player()
+
 
 
 def exit():
-    global boy,grass
-    del(boy)
-    del(grass)
+    #global boy,grass
+    #del(boy)
+    #del(grass)
     pass
 
 
@@ -79,22 +67,22 @@ def handle_events():
         if event.type==SDL_QUIT:
             game_framework.quit()
         elif event.type==SDL_KEYDOWN and event.key==SDLK_ESCAPE:
-            game_framework.change_state(title_state)
+            print("ahffk")
+            #game_framework.change_state(title_state)
         elif event.type==SDL_KEYDOWN and event.key==SDLK_p:
             game_framework.push_state(pause_sate)
     pass
 
 
 def update():
-    boy.update()
     pass
 
 
 def draw():
     clear_canvas()
-    grass.draw()
-    boy.draw()
+    player.draw()
     update_canvas()
+
     pass
 
 
