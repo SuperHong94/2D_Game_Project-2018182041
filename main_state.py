@@ -3,13 +3,12 @@ import json
 import os
 
 from pico2d import *
-from enum   import Enum
 import game_framework
 
 import start_state
 
 #import title_state
-
+import enemis
 import pause_sate
 
 
@@ -19,6 +18,7 @@ boy = None
 grass = None
 font = None
 player=None
+enemy=None
 i=0
 class Player:
     def __init__(self):
@@ -94,12 +94,12 @@ class Bullet:
             self.x, self.y = player.x, player.y + 10
 
 
-
 def enter():
    ''' global boy,grass
     grass=Grass()'''
-   global player,bullets
+   global player,bullets,enemy
    player=Player()
+   enemy=enemis.Enemy()
    bullets = [Bullet() for i in range(11)]
 
 
@@ -147,7 +147,6 @@ def handle_events():
             player.multiKey['right'] = True
             player.direction='right'
         elif event.type==SDL_KEYUP and (event.key==SDLK_LEFT or event.key==SDLK_UP or event.key==SDLK_DOWN or event.key==SDLK_RIGHT):
-            print(event.key)
             if event.key==SDLK_UP:
                 player.multiKey['up'] = False
             elif event.key==SDLK_LEFT:
@@ -172,6 +171,7 @@ def handle_events():
 def update():
     player.update()
     for bullet in bullets: bullet.update()
+    enemy.update()
     pass
 
 
@@ -179,6 +179,7 @@ def draw():
     clear_canvas()
     player.draw()
     for bullet in bullets: bullet.draw()
+    enemy.draw()
     update_canvas()
 
     pass
