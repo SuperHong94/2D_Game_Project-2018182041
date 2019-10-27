@@ -18,7 +18,7 @@ boy = None
 grass = None
 font = None
 player=None
-enemy=None
+Enemis=None
 i=0
 class Player:
     def __init__(self):
@@ -97,9 +97,9 @@ class Bullet:
 def enter():
    ''' global boy,grass
     grass=Grass()'''
-   global player,bullets,enemy
+   global player,bullets,Enemis
    player=Player()
-   enemy=enemis.Enemy()
+   Enemis = [enemis.Enemy() for i in range(11)]
    bullets = [Bullet() for i in range(11)]
 
 
@@ -171,7 +171,7 @@ def handle_events():
 def update():
     player.update()
     for bullet in bullets: bullet.update()
-    enemy.update()
+    for Enemy0 in Enemis:Enemy0.update()
     pass
 
 
@@ -179,7 +179,7 @@ def draw():
     clear_canvas()
     player.draw()
     for bullet in bullets: bullet.draw()
-    enemy.draw()
+    for Enemy0 in Enemis:Enemy0.draw()
     update_canvas()
 
     pass
