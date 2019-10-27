@@ -2,7 +2,6 @@ from pico2d import *
 import main_state
 import random
 
-targetX,targetY=1000,1000
 
 
 
@@ -19,28 +18,28 @@ class Enemy:
         self.speed = 0.5
         self.fire=False
         self.timer=0
+        self.targetX,self.targetY=500,500
         pass
 
     def update(self):
-        global targetX,targetY
+
         self.y-=self.speed*0.5
         if self.y>=500 and self.y<520:
             self.bX, self.bY = self.x, self.y - 10
             self.fire=True
-            targetX=main_state.player.x
-            targetY=main_state.player.y
+            self.targetX,self.targetY=main_state.player.x,main_state.player.y
 
         pass
 
     def draw(self):
         global Timer
-        global targetX,targetY
+
         self.image.clip_draw(30*self.frame,0,30,30,self.x,self.y)
         if(self.fire):
             self.timer+=1
             t = self.timer / 500
-            x = (1 - t) * self.bX + t * targetX
-            y = (1 - t) * self.bY + t * targetY
+            x = (1 - t) * self.bX + t * self.targetX
+            y = (1 - t) * self.bY + t * self.targetY
             self.bulletImage.clip_draw(0,0,10,10,x,y)
 
         pass
