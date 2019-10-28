@@ -101,7 +101,7 @@ def enter():
     grass=Grass()'''
    global player,bullets,Enemis
    player=Player()
-   Enemis = [enemis.Enemy() for i in range(11)]
+   Enemis = [enemis.Enemy() for i in range(100)]
    bullets = [Bullet() for i in range(11)]
 
 
