@@ -6,12 +6,14 @@ import random
 
 
 class Enemy:
+    image=None
+    bulletImage=None
     def __init__(self):
         self.enemyType=0
-        self.image=None
-        self.bulletImage=load_image('resource/enemy_bullet.png')
+        if Enemy.bulletImage==None:
+            Enemy.bulletImage=load_image('resource/enemy_bullet.png')
         if self.enemyType==0:
-            self.image = load_image('resource/enemy0.png')
+            Enemy.image = load_image('resource/enemy0.png')
         self.x, self.y = random.randint(50,800), random.randint(800,1000)
         self.bX,self.bY=self.x,self.y-10
         self.frame = 0  # 0이left, 2==정지,위,아래 , 4==오른쪽

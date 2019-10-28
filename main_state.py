@@ -21,16 +21,16 @@ player=None
 Enemis=None
 i=0
 class Player:
+    image = None
     def __init__(self):
-        self.image=load_image('resource/player(edit).png')
-        #''' self.height=self.image.h
-        #self.width=self.image.w
-        #self.frame=5;'''
+
         self.x, self.y = 400, 10
         self.frame=2  # 0이left, 2==정지,위,아래 , 4==오른쪽
         self.direction='stop'
         self.speed=1
         self.multiKey={'up':False,'down':False,'left':False,'right':False}
+        if Player.image ==None:
+            Player.image=load_image('resource/player(edit).png')
         pass
 
     def update(self):
@@ -71,18 +71,20 @@ class Player:
         pass
 
     def draw(self):
-        self.image.clip_draw(30*self.frame,0,30,30,self.x,self.y)
+        Player.image.clip_draw(30*self.frame,0,30,30,self.x,self.y)
         pass
 
 class Bullet:
+    image=None
     def __init__(self):
-        self.image=load_image('resource/bullet.png')
+        if Bullet.image==None:
+            Bullet.image=load_image('resource/bullet.png')
         self.x,self.y=player.x,player.y+10
         self.being=False
         self.speed=1
     def draw(self):
         if self.being==True:
-            self.image.clip_draw(0,0,7,7,self.x,self.y)
+            Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
     def update(self):
         if self.being==True:
             if(self.y<get_canvas_height()+100):
