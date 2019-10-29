@@ -50,21 +50,22 @@ class Enemy:
 
             elif self.enemyType==1:
                 self.timer += 1
-                cX=((self.targetX-self.sTargetX)**2)**0.5
+                #cX=((self.targetX-self.sTargetX)**2)**0.5
+                cX=self.sTargetX
                 cY=((self.targetY-self.sTargetY)**2)**0.5
-                dx=20
-                dx1=20
-                i=1
-                # if self.sTargetX<400:
-                #     i=1
-                # else:
-                #     i=-1
+                dx=500
+                dx1=500
+                i=0
+                if self.sTargetX>400:
+                    i=1
+                else:
+                    i=-1
 
-                print(self.sTargetY,i)
+                print(i*dx)
 
-                t = self.timer / 1000
-                self.bX = ((1 - t)**3) * self.sTargetX +3*((cX*0.25)+(i*dx))*t*((1-t)**2)+3*((cX*0.75)+(i*(-1)*dx1))*(t**2)*(1-t)+ (t**3) * self.targetX
-                self.bY = ((1 - t)**3) * self.sTargetY +3*((cY*0.25)+(i*dx))*t*((1-t)**2)+3*((cY*0.75)+(i*(-1)*dx1))*(t**2)*(1-t)+ (t**3) * self.targetY
+                t = self.timer / 500
+                self.bX = ((1 - t)**3) * self.sTargetX +3*(cX+(i*dx))*t*((1-t)**2)+3*(cX+(i*(-1)*dx1))*(t**2)*(1-t)+ (t**3) * self.targetX
+                self.bY = ((1 - t)**3) * self.sTargetY + 3 * (cY * 0.25) * t * ((1 - t) ** 2) + 3 * (cY * 0.5) * (t ** 2) * (1 - t) + (t ** 3) * self.targetY
 
                 self.bulletImage.clip_draw(0,0,10,10,self.bX,self.bY)
 
