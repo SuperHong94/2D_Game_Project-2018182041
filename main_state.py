@@ -110,6 +110,9 @@ def exit():
     #global boy,grass
     #del(boy)
     #del(grass)
+    del(player)
+    del(Enemis)
+    del(bullets)
     pass
 
 
