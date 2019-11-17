@@ -1,14 +1,19 @@
-from pico2d import *
 import game_framework
+from pico2d import *
+import game_world
 
 # Player Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP = range(4)
+RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP = range(8)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
+    (SDL_KEYDOWN, SDLK_UP): UP_DOWN,
+    (SDL_KEYDOWN, SDLK_DOWN): DOWN_DOWN,
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
-    (SDL_KEYUP, SDLK_LEFT): LEFT_UP
+    (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
+    (SDL_KEYUP, SDLK_UP): UP_UP,
+    (SDL_KEYUP, SDLK_DOWN): DOWN_UP
 }
 
 
@@ -19,6 +24,14 @@ class FlyState:
             player.velocity += 1
         elif event == LEFT_DOWN:
             player.velocity -= 1
+        elif event == UP_DOWN:
+            player.velocityY += 1
+        elif event == DOWN_DOWN:
+            player.velocityY -= 1
+        elif event == UP_UP:
+            player.velocityY -= 1
+        elif event == DOWN_DOWN:
+            player.velocityY += 1
         elif event == RIGHT_UP:
             player.velocity -= 1
         elif event == LEFT_UP:
@@ -47,7 +60,11 @@ class FlyState:
 
 next_state_table = {
     FlyState: {RIGHT_UP: FlyState, LEFT_UP: FlyState,
-               RIGHT_DOWN: FlyState, RIGHT_UP: FlyState}
+               RIGHT_DOWN: FlyState, LEFT_DOWN: FlyState,
+               UP_UP:FlyState,UP_DOWN:FlyState,
+               DOWN_UP:FlyState,DOWN_DOWN:FlyState
+
+               }
 }
 
 
@@ -61,9 +78,10 @@ class Player:
         self.frame = 2  # 0이left, 2==정지,위,아래 , 4==오른쪽
         self.dir = 0
         self.velocity = 1
-        self.event_que=[]
-        self.cur_state=FlyState
-        self.cur_state.enter(self,None)
+        self.velocityY = 1
+        self.event_que = []
+        self.cur_state = FlyState
+        self.cur_state.enter(self, None)
         pass
 
     def add_event(self, event):
@@ -78,11 +96,11 @@ class Player:
             self.cur_state.enter(self, event)
         pass
 
-
     def draw(self):
         self.cur_state.draw(self)
         pass
-    def handle_event(self,event):
-        if(event.type,event.key) in key_event_table:
-            key_event=key_event_table[(event.type,event.key)]
+
+    def handle_event(self, event):
+        if (event.type, event.key) in key_event_table:
+            key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
