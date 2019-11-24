@@ -63,7 +63,6 @@ next_state_table = {
                RIGHT_DOWN: FlyState, LEFT_DOWN: FlyState,
                UP_UP:FlyState,UP_DOWN:FlyState,
                DOWN_UP:FlyState,DOWN_DOWN:FlyState
-
                }
 }
 

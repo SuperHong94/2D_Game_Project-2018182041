@@ -4,7 +4,7 @@ import os
 
 from pico2d import *
 import game_framework
-import game_world
+#import game_world
 
 from player import Player
 import start_state
