@@ -8,25 +8,24 @@ import game_world
 
 import start_state
 
-import enemis
+#import enemis
 import pause_sate
 from player import Player
 
 name = "MainState"
 
-font = None
 player=None
-Enemis=None
+#Enemis=None
 
 
 def enter():
    global player,Enemis
    global bullets
    player=Player()
-   Enemis = [enemis.Enemy() for i in range(100)]
+   #Enemis = [enemis.Enemy() for i in range(100)]
    #bullets = [Bullet() for i in range(11)]
    game_world.add_object(player,1)
-   game_world.add_object(Enemis,1)
+   #game_world.add_object(Enemis,1)
 
 
 
