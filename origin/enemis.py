@@ -25,6 +25,7 @@ class Enemy:
         self.frame = 0  # 0이left, 2==정지,위,아래 , 4==오른쪽
         self.speed = 0.5
         self.fire=False
+        self.enemy3fire=True
         self.timer=0
         self.sTargetX,self.sTargetY=0,0
         self.targetX,self.targetY=500,500
@@ -36,14 +37,16 @@ class Enemy:
         return self.bX-3,self.bY-3,self.bX+3,self.bY+3
 
     def fire_bullet(self):
-        if self.fire:
-            bullet=enemyBullet(self.x,self.y,1,0)
-            game_world.add_object(bullet,1)
-            bullet = enemyBullet(self.x, self.y, 1, 1)
-            game_world.add_object(bullet, 1)
-            bullet = enemyBullet(self.x, self.y, 1, 2)
-            game_world.add_object(bullet, 1)
-            self.fire=False
+        if self.enemy3fire:
+            bullet0=enemyBullet(self.x,self.y,1,0)
+            game_world.add_object(bullet0,1)
+
+            bullet1 = enemyBullet(self.x, self.y, 1, 1)
+            game_world.add_object(bullet1, 1)
+
+            bullet2 = enemyBullet(self.x, self.y, 1, 2)
+            game_world.add_object(bullet2, 1)
+            self.enemy3fire=False
         pass
 
 
@@ -114,10 +117,11 @@ class enemyBullet:
 
     def update(self):
         self.y -= self.speed
-        if type==1:
+        if self.type==1:
             #self.y-=self.speed
+            print("ehlsi>")
             self.x-=self.speed
-        elif type==2:
+        elif self.type==2:
             #self.y-=self.speed
             self.x += self.speed
         if self.y < 0 or self.y > 1600 - 25:

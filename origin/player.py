@@ -2,7 +2,8 @@ from pico2d import *
 
 import game_world
 import main_state
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_UP,UP_DOWN,DOWN_UP,DOWN_DOWN, SPACE = range(9)
+
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_UP, UP_DOWN, DOWN_UP, DOWN_DOWN, SPACE = range(9)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -16,7 +17,9 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
 
-bullets=[]
+bullets = []
+
+
 class IdleState:
     @staticmethod
     def enter(player, event):
@@ -91,7 +94,7 @@ class RunState:
         # player.frame = (player.frame + 1) % 8
         player.timer -= 1
         player.x += player.velocity
-        player.y+=player.velocityY
+        player.y += player.velocityY
         player.x = clamp(25, player.x, 1600 - 25)
 
     @staticmethod
@@ -100,9 +103,11 @@ class RunState:
 
 
 next_state_table = {
-    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState,UP_UP:RunState,DOWN_UP:RunState,UP_DOWN:RunState,DOWN_DOWN:RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
+    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, UP_UP: RunState, DOWN_UP: RunState, UP_DOWN: RunState,
+                DOWN_DOWN: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                 SPACE: IdleState},
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,UP_UP:IdleState,DOWN_UP:IdleState,UP_DOWN:IdleState,DOWN_DOWN:IdleState,
+    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, UP_UP: IdleState,
+               DOWN_UP: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState,
                SPACE: RunState},
 }
 
@@ -127,7 +132,7 @@ class Player:
             Player.image = load_image('resource/player(edit).png')
 
     def fire_bullet(self):
-        bullet=Bullet(self.x,self.y,3)
+        bullet = Bullet(self.x, self.y, 3)
         game_world.add_object(bullet, 1)
 
     def add_event(self, event):
@@ -136,7 +141,6 @@ class Player:
     def get_bb(self):
         # fill here
         return self.x - 15, self.y - 10, self.x + 10, self.y + 13
-
 
     def update(self):
         self.cur_state.do(self)
@@ -148,7 +152,6 @@ class Player:
 
         pass
 
-
     def draw(self):
         self.cur_state.draw(self)
         draw_rectangle(*self.get_bb())
@@ -159,32 +162,61 @@ class Player:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
+
 class Bullet():
-    image=None
+    image = None
 
     def __init__(self, x=400, y=300, velocity=0.5):
-        if Bullet.image==None:
-            Bullet.image=load_image('resource/bullet.png')
-        self.x,self.y=x,y+10
-        self.speed=velocity
-    def draw(self):
-       # Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
-       self.image.draw(self.x, self.y)
-       draw_rectangle(*self.get_bb())
+        if Bullet.image == None:
+            Bullet.image = load_image('resource/bullet.png')
+        self.x, self.y = x, y + 10
+        self.speed = velocity
 
+    def draw(self):
+        # Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
+        self.image.draw(self.x, self.y)
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.y += self.speed
         if self.y < 0 or self.y > 1600 - 25:
             game_world.remove_object(self)
         for enemy in main_state.Enemis:
-            if main_state.collide(self,enemy):
+            if main_state.collide(self, enemy):
+                explosion = Explosion(self.x,self.y )
+                game_world.add_object(explosion, 1)
+
                 main_state.Enemis.remove(enemy)
                 game_world.remove_object(enemy)
                 game_world.remove_object(self)
-
 
     def get_bb(self):
         # fill here
         return self.x - 3, self.y - 3, self.x + 3, self.y + 3
 
+
+class Explosion:
+    image = None
+
+    def __init__(self,x,y):
+        if Explosion.image is None:
+            self.image = load_image('resource/explosion.png')
+
+        self.x, self.y = x, y
+        self.Xframe = 0
+        self.Yframe = 0
+        self.size = 64
+        self.timer=0
+
+    def draw(self):
+        self.image.clip_draw(self.size * self.Xframe, self.size * self.Yframe, self.size, self.size, self.x, self.y)
+
+    def update(self):
+        if self.timer>20:
+            game_world.remove_object(self)
+        if self.Xframe < 4:
+            self.Xframe += 1
+        else:
+            self.Yframe += 1
+            self.Xframe = 0
+        self.timer+=1
