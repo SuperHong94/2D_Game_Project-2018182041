@@ -1,7 +1,7 @@
 from pico2d import *
 
 import game_world
-
+import main_state
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_UP,UP_DOWN,DOWN_UP,DOWN_DOWN, SPACE = range(9)
 
 key_event_table = {
@@ -16,7 +16,7 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
 
-
+bullets=[]
 class IdleState:
     @staticmethod
     def enter(player, event):
@@ -177,7 +177,14 @@ class Bullet():
         self.y += self.speed
         if self.y < 0 or self.y > 1600 - 25:
             game_world.remove_object(self)
+        for enemy in main_state.Enemis:
+            if main_state.collide(self,enemy):
+                main_state.Enemis.remove(enemy)
+                game_world.remove_object(enemy)
+                game_world.remove_object(self)
+
 
     def get_bb(self):
         # fill here
         return self.x - 3, self.y - 3, self.x + 3, self.y + 3
+

@@ -25,6 +25,11 @@ class Enemy:
         self.sTargetX,self.sTargetY=0,0
         self.targetX,self.targetY=500,500
         pass
+    def get_bb(self):
+        # fill here
+        return self.x - 15, self.y - 10, self.x + 10, self.y + 13
+    def get_bbBullet(self):
+        return self.bX-3,self.bY-3,self.bX+3,self.bY+3
 
 
     def update(self):
@@ -46,6 +51,7 @@ class Enemy:
                 self.bX = (1 - t) * self.sTargetX + t * self.targetX
                 self.bY = (1 - t) * self.sTargetY + t * self.targetY
                 self.bulletImage.clip_draw(0, 0, 10, 10, self.bX, self.bY)
+                draw_rectangle(*self.get_bbBullet())
             elif self.enemyType==1:
                 self.timer += 1
                 #cX=((self.targetX-self.sTargetX)**2)**0.5
@@ -63,12 +69,19 @@ class Enemy:
                 self.bX = ((1 - t)**3) * self.sTargetX +3*(cX+(i*dx))*t*((1-t)**2)+3*(cX+(i*(-1)*dx1))*(t**2)*(1-t)+ (t**3) * self.targetX
                 self.bY = ((1 - t)**3) * self.sTargetY + 3 * (cY * 0.25) * t * ((1 - t) ** 2) + 3 * (cY * 0.5) * (t ** 2) * (1 - t) + (t ** 3) * self.targetY
                 self.bulletImage.clip_draw(0, 0, 10, 10, self.bX, self.bY)
+                draw_rectangle(*self.get_bbBullet())
             elif self.enemyType==2:
                 self.timer+=1
                 t = self.timer / 500
                 self.x = (1 - t) * self.sTargetX + t * self.targetX
                 self.y = (1 - t) * self.sTargetY + t * self.targetY
+
+        draw_rectangle(*self.get_bb())
         pass
+
+
+
+
 
 
 

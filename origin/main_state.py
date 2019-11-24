@@ -14,10 +14,12 @@ from player import Player
 
 name = "MainState"
 
-player=None
-Enemis=[]
+player = None
+Enemis = []
+bullet=None
 
-def collide(a, b):  #충돌함수
+
+def collide(a, b):  # 충돌함수
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
@@ -27,18 +29,21 @@ def collide(a, b):  #충돌함수
     if bottom_a > top_b: return False
     return True
 
+
 def enter():
-   global player,Enemis
-   global bullets
-   player=Player()
-   Enemis = [enemis.Enemy() for i in range(100)]
-   game_world.add_object(player,1)
+    global player, Enemis
+    player = Player()
+    game_world.add_object(player, 1)
+
+    Enemis = [enemis.Enemy() for i in range(100)]
+    game_world.add_objects(Enemis,1)
 
 
 def exit():
     # del(player)
     # del(Enemis)
     # del(bullets)
+    clear_canvas()
     game_world.clear()
     pass
 
@@ -52,25 +57,26 @@ def resume():
 
 
 def handle_events():
-    events=get_events()
+    events = get_events()
     for event in events:
-        if event.type==SDL_QUIT:
+        if event.type == SDL_QUIT:
             game_framework.quit()
-        elif event.type==SDL_KEYDOWN and event.key==SDLK_ESCAPE:
-            game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            game_framework.change_state(start_state)
         else:
             player.handle_event(event)
-           #Enemis.handle_event(event)
-
-
-
-
+        # Enemis.handle_event(event)
 
 
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    for Enemy0 in Enemis:Enemy0.update()
+    # for Enemy0 in Enemis:Enemy0.update()
+    for enemy in Enemis:
+        global player
+        if collide(player,enemy):
+            game_framework.change_state(start_state)
+
     pass
 
 
@@ -78,7 +84,7 @@ def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
-    for Enemy0 in Enemis: Enemy0.draw()
+    # for Enemy0 in Enemis: Enemy0.draw()
     update_canvas()
 
     pass
