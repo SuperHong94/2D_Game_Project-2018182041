@@ -40,8 +40,8 @@ def enter():
 
 
 def exit():
-    # del(player)
-    # del(Enemis)
+    del(player)
+    del(Enemis)
     # del(bullets)
     clear_canvas()
     game_world.clear()
