@@ -3,7 +3,17 @@ import main_state
 import random
 import game_world
 import main_state
+import explosion
 
+def collideBullet(a, b):  # 충돌함수
+    left_a, bottom_a, right_a, top_a = a.get_bbBullet()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+    return True
 class Enemy:
     image=None
     bulletImage=None
@@ -59,6 +69,12 @@ class Enemy:
             self.targetX,self.targetY=main_state.player.x,main_state.player.y
             if self.enemyType==3:
                 self.fire_bullet()
+
+        if collideBullet(self,main_state.player):
+            explosions = explosion.Explosion(self.x, self.y)
+            game_world.add_object(explosions, 1)
+            game_world.remove_object(self)
+
         pass
 
     def draw(self):
@@ -127,6 +143,8 @@ class enemyBullet:
         if self.y < 0 or self.y > 1600 - 25:
             game_world.remove_object(self)
         if main_state.collide(main_state.player,self):
+            explosions=explosion.Explosion(self.x,self.y)
+            game_world.add_object(explosions,1)
             game_world.remove_object(self)
             pass
 

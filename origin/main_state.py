@@ -11,7 +11,7 @@ import start_state
 import enemis
 import pause_sate
 from player import Player
-
+import explosion
 name = "MainState"
 
 player = None
@@ -75,7 +75,11 @@ def update():
     for enemy in Enemis:
         global player
         if collide(player,enemy):
-            game_framework.change_state(start_state)
+            explosions=explosion.Explosion(player.x,player.y)
+            game_world.add_object(explosions,1)
+            Enemis.remove(enemy)
+            game_world.remove_object(enemy)
+
 
     pass
 
