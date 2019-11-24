@@ -133,6 +133,10 @@ class Player:
     def add_event(self, event):
         self.event_que.insert(0, event)
 
+    def get_bb(self):
+        # fill here
+        return self.x - 15, self.y - 10, self.x + 10, self.y + 13
+
 
     def update(self):
         self.cur_state.do(self)
@@ -147,6 +151,7 @@ class Player:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
         pass
 
     def handle_event(self, event):
@@ -163,9 +168,16 @@ class Bullet():
         self.x,self.y=x,y+10
         self.speed=velocity
     def draw(self):
-           # Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
-           self.image.draw(self.x, self.y)
+       # Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
+       self.image.draw(self.x, self.y)
+       draw_rectangle(*self.get_bb())
+
+
     def update(self):
         self.y += self.speed
         if self.y < 0 or self.y > 1600 - 25:
             game_world.remove_object(self)
+
+    def get_bb(self):
+        # fill here
+        return self.x - 3, self.y - 3, self.x + 3, self.y + 3

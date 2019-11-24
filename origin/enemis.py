@@ -2,8 +2,6 @@ from pico2d import *
 import main_state
 import random
 
-
-
 class Enemy:
     image=None
     bulletImage=None
@@ -70,12 +68,6 @@ class Enemy:
                 t = self.timer / 500
                 self.x = (1 - t) * self.sTargetX + t * self.targetX
                 self.y = (1 - t) * self.sTargetY + t * self.targetY
-
-
-
-
-
-
         pass
 
 
