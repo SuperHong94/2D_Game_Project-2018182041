@@ -15,71 +15,67 @@ key_event_table = {
 
 class IdleState:
     @staticmethod
-    def enter(boy, event):
+    def enter(player, event):
         if event == RIGHT_DOWN:
-            boy.velocity += 1
+            player.velocity += 1
         elif event == LEFT_DOWN:
-            boy.velocity -= 1
+            player.velocity -= 1
         elif event == RIGHT_UP:
-            boy.velocity -= 1
+            player.velocity -= 1
         elif event == LEFT_UP:
-            boy.velocity += 1
-        boy.timer = 300
+            player.velocity += 1
+        player.timer = 300
 
     @staticmethod
-    def exit(boy, event):
+    def exit(player, event):
         # fill here
         if event==SPACE:
-            boy.fire_ball()
+            player.fire_ball()
         pass
 
     @staticmethod
-    def do(boy):
-        boy.frame = (boy.frame + 1) % 8
+    def do(player):
+        #player.frame = (boy.frame + 1) % 8
         # fill here
+        pass
+
 
     @staticmethod
-    def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_draw(boy.frame * 100, 300, 100, 100, boy.x, boy.y)
-        else:
-            boy.image.clip_draw(boy.frame * 100, 200, 100, 100, boy.x, boy.y)
+    def draw(player):
+      player.image.clip_draw(30*player.frame,0,30,30,player.x,player.y)
 
 
 class RunState:
 
     @staticmethod
-    def enter(boy, event):
+    def enter(player, event):
         if event == RIGHT_DOWN:
-            boy.velocity += 1
+            player.velocity += 1
         elif event == LEFT_DOWN:
-            boy.velocity -= 1
+            player.velocity -= 1
         elif event == RIGHT_UP:
-            boy.velocity -= 1
+            player.velocity -= 1
         elif event == LEFT_UP:
-            boy.velocity += 1
-        boy.dir = boy.velocity
+            player.velocity += 1
+        player.dir = player.velocity
 
     @staticmethod
-    def exit(boy, event):
+    def exit(player, event):
         # fill here
         if event==SPACE:
-            boy.fire_ball()
+            player.fire_ball()
         pass
 
     @staticmethod
-    def do(boy):
-        boy.frame = (boy.frame + 1) % 8
-        boy.timer -= 1
-        boy.x += boy.velocity
-        boy.x = clamp(25, boy.x, 1600 - 25)
+    def do(player):
+        #player.frame = (player.frame + 1) % 8
+        player.timer -= 1
+        player.x += player.velocity
+        player.x = clamp(25, player.x, 1600 - 25)
 
     @staticmethod
-    def draw(boy):
-        if boy.velocity == 1:
-            boy.image.clip_draw(boy.frame * 100, 100, 100, 100, boy.x, boy.y)
-        else:
-            boy.image.clip_draw(boy.frame * 100, 0, 100, 100, boy.x, boy.y)
+    def draw(player):
+        player.image.clip_draw(30 * player.frame, 0, 30, 30, player.x, player.y)
 
 next_state_table={
     IdleState:{RIGHT_UP:RunState,LEFT_UP:RunState,RIGHT_DOWN:RunState,LEFT_DOWN: RunState,
@@ -108,8 +104,18 @@ class Player:
         self.cur_state.do(self)
         if len(self.event_que)>0:
             event=self.event_que.pop()
-            self.cur_state.exit(self,event)
+            self.cur_state.exit(self.event)
+            self.cur_state=next_state_table[self.cur_state][event]
+            self.cur_state.enter(self,event)
 
+        pass
+
+    def add_event(self,event):
+        self.event_que.insert(0,event)
+
+
+    def draw(self):
+        self.cur_state.draw(self)
         pass
 
     def handle_events(self,event):
@@ -117,10 +123,6 @@ class Player:
             key_event=key_event_table[(event.type,event.key)]
             self.add_event(key_event)
 
-
-    def draw(self):
-        self.cur_state.draw(self)
-        pass
 
 
 
