@@ -8,25 +8,22 @@ import game_world
 
 import start_state
 
-#import enemis
+import enemis
 import pause_sate
 from player import Player
 
 name = "MainState"
 
 player=None
-#Enemis=None
+Enemis=[]
 
 
 def enter():
    global player,Enemis
    global bullets
    player=Player()
-   #Enemis = [enemis.Enemy() for i in range(100)]
-   #bullets = [Bullet() for i in range(11)]
+   Enemis = [enemis.Enemy() for i in range(100)]
    game_world.add_object(player,1)
-   #game_world.add_object(Enemis,1)
-
 
 
 def exit():
@@ -64,6 +61,7 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+    for Enemy0 in Enemis:Enemy0.update()
     pass
 
 
@@ -71,6 +69,7 @@ def draw():
     clear_canvas()
     for game_object in game_world.all_objects():
         game_object.draw()
+    for Enemy0 in Enemis: Enemy0.draw()
     update_canvas()
 
     pass
