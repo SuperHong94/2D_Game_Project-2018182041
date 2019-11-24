@@ -43,7 +43,7 @@ class IdleState:
     def exit(player, event):
         # fill here
         if event == SPACE:
-            player.fire_ball()
+            player.fire_bullet()
         pass
 
     @staticmethod
@@ -83,7 +83,7 @@ class RunState:
     def exit(player, event):
         # fill here
         if event == SPACE:
-            player.fire_ball()
+            player.fire_bullet()
         pass
 
     @staticmethod
@@ -108,6 +108,8 @@ next_state_table = {
 
 
 class Player:
+    y = None
+    x = None
     image = None
 
     def __init__(self):
@@ -123,10 +125,14 @@ class Player:
         self.cur_state.enter(self, None)
         if Player.image == None:
             Player.image = load_image('resource/player(edit).png')
-        pass
+
+    def fire_bullet(self):
+        bullet=Bullet(self.x,self.y,3)
+        game_world.add_object(bullet, 1)
 
     def add_event(self, event):
         self.event_que.insert(0, event)
+
 
     def update(self):
         self.cur_state.do(self)
@@ -148,23 +154,18 @@ class Player:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
-# class Bullet:
-#     image=None
-#     def __init__(self):
-#         if Bullet.image==None:
-#             Bullet.image=load_image('resource/bullet.png')
-#         self.x,self.y=player.x,player.y+10
-#         self.being=False
-#         self.speed=1
-#     def draw(self):
-#         if self.being==True:
-#             Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
-#     def update(self):
-#         if self.being==True:
-#             if(self.y<get_canvas_height()+100):
-#                 self.y+=self.speed
-#             else:
-#                 self.x, self.y = player.x, player.y+10
-#                 self.being=False
-#         else:
-#             self.x, self.y = player.x, player.y + 10
+class Bullet():
+    image=None
+
+    def __init__(self, x=400, y=300, velocity=0.5):
+        if Bullet.image==None:
+            Bullet.image=load_image('resource/bullet.png')
+        self.x,self.y=x,y+10
+        self.speed=velocity
+    def draw(self):
+           # Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
+           self.image.draw(self.x, self.y)
+    def update(self):
+        self.y += self.speed
+        if self.y < 0 or self.y > 1600 - 25:
+            game_world.remove_object(self)
