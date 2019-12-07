@@ -13,7 +13,7 @@ import pause_sate
 from player import Player
 import explosion
 name = "MainState"
-
+# main tmain state
 player = None
 Enemis = []
 bullet=None
