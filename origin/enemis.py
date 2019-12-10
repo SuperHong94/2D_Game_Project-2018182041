@@ -135,7 +135,6 @@ class enemyBullet:
         self.y -= self.speed
         if self.type==1:
             #self.y-=self.speed
-            print("ehlsi>")
             self.x-=self.speed
         elif self.type==2:
             #self.y-=self.speed

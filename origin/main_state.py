@@ -7,7 +7,7 @@ import game_framework
 import game_world
 
 import start_state
-
+from backGround import BackGround
 import enemis
 import pause_sate
 from player import Player
@@ -17,6 +17,7 @@ name = "MainState"
 player = None
 Enemis = []
 bullet=None
+backGround=None
 
 
 def collide(a, b):  # 충돌함수
@@ -31,7 +32,10 @@ def collide(a, b):  # 충돌함수
 
 
 def enter():
-    global player, Enemis
+    global player, Enemis, backGround
+    backGround=BackGround()
+
+    game_world.add_object(backGround,0)
     player = Player()
     game_world.add_object(player, 1)
 
@@ -40,8 +44,7 @@ def enter():
 
 
 def exit():
-    del(player)
-    del(Enemis)
+
     # del(bullets)
     clear_canvas()
     game_world.clear()
