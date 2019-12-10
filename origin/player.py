@@ -3,6 +3,7 @@ from pico2d import *
 import game_world
 import main_state
 import explosion
+import game_framework
 
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_UP, UP_DOWN, DOWN_UP, DOWN_DOWN, SPACE = range(9)
 
@@ -95,12 +96,18 @@ class RunState:
             player.velocity -= playerSpeed
         elif event == LEFT_UP:
             player.velocity += playerSpeed
+
+
         player.dir = player.velocity
 
     @staticmethod
     def exit(player, event):
         # fill here
         if event == SPACE:
+            # player.gun_sound = load_wav('resource/gun.wav')
+            # player.gun_sound.set_volume(32)
+            # player.gun_sound.play(1)
+
             player.fire_bullet()
         pass
 
@@ -131,6 +138,7 @@ class Player:
     y = None
     x = None
     image = None
+    font = None
 
     def __init__(self):
 
@@ -143,12 +151,20 @@ class Player:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
+        # self.gun_sound=load_wav('resource/gun.wav')
+        # self.gun_sound.set_volume(32)
+        # self.gun_sound.play()
         if Player.image == None:
             Player.image = load_image('resource/player(edit).png')
+        # if Player.font is None:
+        #     Player.font = load_font('ENCR10B.TTF', 20)
 
     def fire_bullet(self):
+
         bullet = Bullet(self.x, self.y, 3)
         game_world.add_object(bullet, 1)
+
+        pass
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -169,7 +185,8 @@ class Player:
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
+       # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % (get_time() - self.start_time), (0, 0, 0))
         pass
 
     def handle_event(self, event):
@@ -187,10 +204,13 @@ class Bullet():
         self.x, self.y = x, y + 10
         self.speed = velocity
 
+
     def draw(self):
          #Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
          self.image.draw(self.x, self.y)
-         draw_rectangle(*self.get_bb())
+         #draw_rectangle(*self.get_bb())
+
+
 
     def update(self):
         self.y += playerSpeed*1.5

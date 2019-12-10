@@ -87,7 +87,8 @@ class Enemy:
                     explosions = explosion.Explosion(self.bX, self.bY )
                     game_world.add_object(explosions, 1)
                     game_world.remove_object(self)
-                draw_rectangle(*self.get_bbBullet())
+                    main_state.gameEnd = True
+                #draw_rectangle(*self.get_bbBullet())
 
             elif self.enemyType == 1:
                 self.timer += enemySpeed*1.5
@@ -112,14 +113,15 @@ class Enemy:
                     explosions = explosion.Explosion(self.bX, self.bY )
                     game_world.add_object(explosions, 1)
                     game_world.remove_object(self)
-                draw_rectangle(*self.get_bbBullet())
+                    main_state.gameEnd = True
+                #draw_rectangle(*self.get_bbBullet())
             elif self.enemyType == 2:
                 self.timer += enemySpeed*1.5
                 t = self.timer / 500
                 self.x = (1 - t) * self.sTargetX + t * self.targetX
                 self.y = (1 - t) * self.sTargetY + t * self.targetY
 
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
         pass
 
 
@@ -136,7 +138,7 @@ class enemyBullet:
     def draw(self):
         # Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
         self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def update(self):
         self.y -= self.speed*2
@@ -152,6 +154,7 @@ class enemyBullet:
             explosions = explosion.Explosion(self.x, self.y)
             game_world.add_object(explosions, 1)
             game_world.remove_object(self)
+            main_state.gameEnd=True
             pass
 
     def get_bb(self):

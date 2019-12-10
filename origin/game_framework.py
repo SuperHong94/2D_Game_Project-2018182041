@@ -9,7 +9,7 @@ class GameState:
         self.draw = state.draw
 
 
-
+gamePoint=0
 class TestGameState:
 
     def __init__(self, name):
