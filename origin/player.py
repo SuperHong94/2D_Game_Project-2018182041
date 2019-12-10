@@ -16,6 +16,7 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
+playerSpeed=10
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
@@ -35,21 +36,21 @@ class IdleState:
     @staticmethod
     def enter(player, event):
         if event == RIGHT_DOWN:
-            player.velocity += 1
+            player.velocity += playerSpeed
         elif event == LEFT_DOWN:
-            player.velocity -= 1
+            player.velocity -= playerSpeed
         elif event == UP_DOWN:
-            player.velocityY += 1
+            player.velocityY += playerSpeed
         elif event == DOWN_DOWN:
-            player.velocityY -= 1
+            player.velocityY -= playerSpeed
         elif event == UP_UP:
-            player.velocityY -= 1
+            player.velocityY -= playerSpeed
         elif event == DOWN_UP:
-            player.velocityY += 1
+            player.velocityY += playerSpeed
         elif event == RIGHT_UP:
-            player.velocity -= 1
+            player.velocity -= playerSpeed
         elif event == LEFT_UP:
-            player.velocity += 1
+            player.velocity += playerSpeed
         player.frame=2
 
         player.timer = 300
@@ -77,23 +78,23 @@ class RunState:
     @staticmethod
     def enter(player, event):
         if event == RIGHT_DOWN:
-            player.velocity += 1
+            player.velocity += playerSpeed
             player.frame=4
         elif event == LEFT_DOWN:
-            player.velocity -= 1
+            player.velocity -= playerSpeed
             player.frame=0
         elif event == UP_DOWN:
-            player.velocityY += 1
+            player.velocityY += playerSpeed
         elif event == DOWN_DOWN:
-            player.velocityY -= 1
+            player.velocityY -= playerSpeed
         elif event == UP_UP:
-            player.velocityY -= 1
+            player.velocityY -= playerSpeed
         elif event == DOWN_UP:
-            player.velocityY += 1
+            player.velocityY += playerSpeed
         elif event == RIGHT_UP:
-            player.velocity -= 1
+            player.velocity -= playerSpeed
         elif event == LEFT_UP:
-            player.velocity += 1
+            player.velocity += playerSpeed
         player.dir = player.velocity
 
     @staticmethod
@@ -192,7 +193,7 @@ class Bullet():
          draw_rectangle(*self.get_bb())
 
     def update(self):
-        self.y += self.speed
+        self.y += playerSpeed*1.5
         if self.y < 0 or self.y > 1600 - 25:
             game_world.remove_object(self)
         for enemy in main_state.Enemis:

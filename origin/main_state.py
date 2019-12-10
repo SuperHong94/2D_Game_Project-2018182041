@@ -47,13 +47,14 @@ def enter():
     global player, Enemis, backGround
     backGround = BackGround()
 
+    # Enemis = [enemis.Enemy() for i in range(10)]
+    # game_world.add_objects(Enemis, 1)
     game_world.add_object(backGround, 0)
     player = Player()
     game_world.add_object(player, 1)
 
 
-    Enemis = [enemis.Enemy() for i in range(10)]
-    game_world.add_objects(Enemis,1)
+
 
 
 def exit():
@@ -84,12 +85,18 @@ def handle_events():
 
 
 
-
+worldTime=1
 def update():
-    global player
+    global player,worldTime,Enemis
     for game_object in game_world.all_objects():
         game_object.update()
     # for Enemy0 in Enemis:Enemy0.update()
+    if 100%worldTime==100:
+        enemys  =[enemis.Enemy() for i in range(3)]
+        game_world.add_objects(enemys, 1)
+        Enemis.extend(enemys)
+        worldTime=1
+
 
 
     for enemy in Enemis:
@@ -98,6 +105,8 @@ def update():
             game_world.add_object(explosions, 1)
             Enemis.remove(enemy)
             game_world.remove_object(enemy)
+    worldTime+=1
+    print(worldTime)
     pass
 
 

@@ -8,7 +8,7 @@ import explosion
 
 
 
-
+enemySpeed=2
 class Enemy:
     image = None
     bulletImage = None
@@ -28,7 +28,7 @@ class Enemy:
         self.x, self.y = random.randint(50, 500), random.randint(800, 2000)
         self.bX, self.bY = self.x, self.y - 10
         self.frame = 0  # 0이left, 2==정지,위,아래 , 4==오른쪽
-        self.speed = 0.5
+        self.speed = 4
         self.fire = False
         self.enemy3fire = True
         self.timer = 0
@@ -78,7 +78,7 @@ class Enemy:
         self.image.draw(self.x, self.y)
         if (self.fire):
             if self.enemyType == 0:
-                self.timer += 1
+                self.timer += enemySpeed*1.5
                 t = self.timer / 500
                 self.bX = (1 - t) * self.sTargetX + t * self.targetX
                 self.bY = (1 - t) * self.sTargetY + t * self.targetY
@@ -90,7 +90,7 @@ class Enemy:
                 draw_rectangle(*self.get_bbBullet())
 
             elif self.enemyType == 1:
-                self.timer += 1
+                self.timer += enemySpeed*1.5
                 # cX=((self.targetX-self.sTargetX)**2)**0.5
                 cX = self.sTargetX
                 cY = ((self.targetY - self.sTargetY) ** 2) ** 0.5
@@ -114,7 +114,7 @@ class Enemy:
                     game_world.remove_object(self)
                 draw_rectangle(*self.get_bbBullet())
             elif self.enemyType == 2:
-                self.timer += 1
+                self.timer += enemySpeed*1.5
                 t = self.timer / 500
                 self.x = (1 - t) * self.sTargetX + t * self.targetX
                 self.y = (1 - t) * self.sTargetY + t * self.targetY
@@ -139,13 +139,13 @@ class enemyBullet:
         draw_rectangle(*self.get_bb())
 
     def update(self):
-        self.y -= self.speed
+        self.y -= self.speed*2
         if self.type == 1:
             # self.y-=self.speed
-            self.x -= self.speed
+            self.x -= self.speed*2
         elif self.type == 2:
             # self.y-=self.speed
-            self.x += self.speed
+            self.x += self.speed*2
         if self.y < 0 or self.y > 1600 - 25:
             game_world.remove_object(self)
         if main_state.collide(main_state.player, self):
