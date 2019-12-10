@@ -50,6 +50,7 @@ class IdleState:
             player.velocity -= 1
         elif event == LEFT_UP:
             player.velocity += 1
+        player.frame=2
 
         player.timer = 300
 
@@ -77,8 +78,10 @@ class RunState:
     def enter(player, event):
         if event == RIGHT_DOWN:
             player.velocity += 1
+            player.frame=4
         elif event == LEFT_DOWN:
             player.velocity -= 1
+            player.frame=0
         elif event == UP_DOWN:
             player.velocityY += 1
         elif event == DOWN_DOWN:
@@ -130,7 +133,7 @@ class Player:
 
     def __init__(self):
 
-        self.x, self.y = 400, 10
+        self.x, self.y = 300, 10
         self.frame = 2  # 0이left, 2==정지,위,아래 , 4==오른쪽
         self.direction = 1
         self.velocity = 0
@@ -184,9 +187,9 @@ class Bullet():
         self.speed = velocity
 
     def draw(self):
-        # Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
-        self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+         #Bullet.image.clip_draw(0,0,7,7,self.x,self.y)
+         self.image.draw(self.x, self.y)
+         draw_rectangle(*self.get_bb())
 
     def update(self):
         self.y += self.speed

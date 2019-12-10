@@ -12,12 +12,24 @@ import enemis
 import pause_sate
 from player import Player
 import explosion
+
 name = "MainState"
 # main tmain state
 player = None
 Enemis = []
-bullet=None
-backGround=None
+bullet = None
+backGround = None
+
+
+def collideBullet(a, b):  # 충돌함수
+    left_a, bottom_a, right_a, top_a = a.get_bbBullet()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+    return True
 
 
 def collide(a, b):  # 충돌함수
@@ -33,18 +45,18 @@ def collide(a, b):  # 충돌함수
 
 def enter():
     global player, Enemis, backGround
-    backGround=BackGround()
+    backGround = BackGround()
 
-    game_world.add_object(backGround,0)
+    game_world.add_object(backGround, 0)
     player = Player()
     game_world.add_object(player, 1)
 
-    Enemis = [enemis.Enemy() for i in range(100)]
+
+    Enemis = [enemis.Enemy() for i in range(10)]
     game_world.add_objects(Enemis,1)
 
 
 def exit():
-
     # del(bullets)
     clear_canvas()
     game_world.clear()
@@ -71,19 +83,21 @@ def handle_events():
         # Enemis.handle_event(event)
 
 
+
+
 def update():
+    global player
     for game_object in game_world.all_objects():
         game_object.update()
     # for Enemy0 in Enemis:Enemy0.update()
+
+
     for enemy in Enemis:
-        global player
-        if collide(player,enemy):
-            explosions=explosion.Explosion(player.x,player.y)
-            game_world.add_object(explosions,1)
+        if collide(player, enemy):
+            explosions = explosion.Explosion(player.x, player.y)
+            game_world.add_object(explosions, 1)
             Enemis.remove(enemy)
             game_world.remove_object(enemy)
-
-
     pass
 
 
